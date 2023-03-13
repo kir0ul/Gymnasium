@@ -541,6 +541,9 @@ algorithm.</p>
     <span class="p">),</span>  <span class="c1"># Root folder where plots are saved</span>
 <span class="p">)</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+
+<span class="c1"># Create the figure folder if it doesn&#39;t exists</span>
+<span class="n">p</span><span class="o">.</span><span class="n">savefig_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
