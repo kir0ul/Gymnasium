@@ -486,8 +486,8 @@ algorithm.</p>
 <section id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">#</a></h2>
 <p>Let’s first import a few dependencies we’ll need.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -507,43 +507,42 @@ algorithm.</p>
 </section>
 <section id="parameters-we-ll-use">
 <h2>Parameters we’ll use<a class="headerlink" href="#parameters-we-ll-use" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Params</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
-    <span class="s2">&quot;Params&quot;</span><span class="p">,</span>
-    <span class="p">[</span>
-        <span class="s2">&quot;total_episodes&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;gamma&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;epsilon&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;map_size&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;seed&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;is_slippery&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;n_runs&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;action_size&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;state_size&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;proba_frozen&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;savefig_folder&quot;</span><span class="p">,</span>
-    <span class="p">],</span>
-<span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">Params</span><span class="p">(</span>
-    <span class="n">total_episodes</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>  <span class="c1"># Total episodes</span>
-    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># Learning rate</span>
-    <span class="n">gamma</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>  <span class="c1"># Discounting rate</span>
-    <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Exploration probability</span>
-    <span class="n">map_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># Number of tiles of one side of the squared environment</span>
-    <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>  <span class="c1"># Define a seed so that we get reproducible results</span>
-    <span class="n">is_slippery</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Frozenlake param</span>
-    <span class="n">n_runs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>  <span class="c1"># Number of runs</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Params</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">total_episodes</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Total episodes</span>
+    <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># Learning rate</span>
+    <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># Discounting rate</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># Exploration probability</span>
+    <span class="n">map_size</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Number of tiles of one side of the squared environment</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Define a seed so that we get reproducible results</span>
+    <span class="n">is_slippery</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1"># If true the player will move in intended direction with probability of 1/3 else will move in either perpendicular direction with equal probability of 1/3 in both directions</span>
+    <span class="n">n_runs</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Number of runs</span>
+    <span class="n">action_size</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Number of possible actions</span>
+    <span class="n">state_size</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Number of possible states</span>
+    <span class="n">proba_frozen</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># Probability that a tile is frozen</span>
+    <span class="n">savefig_folder</span><span class="p">:</span> <span class="n">Path</span>  <span class="c1"># Root folder where plots are saved</span>
+
+
+<span class="n">params</span> <span class="o">=</span> <span class="n">Params</span><span class="p">(</span>
+    <span class="n">total_episodes</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">map_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>
+    <span class="n">is_slippery</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_runs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">action_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">state_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">proba_frozen</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>  <span class="c1"># probability that a tile is frozen</span>
-    <span class="n">savefig_folder</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span>
-        <span class="s2">&quot;../../_static/img/tutorials/&quot;</span>
-    <span class="p">),</span>  <span class="c1"># Root folder where plots are saved</span>
+    <span class="n">proba_frozen</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">savefig_folder</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../_static/img/tutorials/&quot;</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">params</span>
+
+<span class="c1"># Set the seed</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
 
 <span class="c1"># Create the figure folder if it doesn&#39;t exists</span>
-<span class="n">p</span><span class="o">.</span><span class="n">savefig_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">params</span><span class="o">.</span><span class="n">savefig_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -551,9 +550,11 @@ algorithm.</p>
 <h2>The FrozenLake environment<a class="headerlink" href="#the-frozenlake-environment" title="Permalink to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
     <span class="s2">&quot;FrozenLake-v1&quot;</span><span class="p">,</span>
-    <span class="n">is_slippery</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">is_slippery</span><span class="p">,</span>
+    <span class="n">is_slippery</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">is_slippery</span><span class="p">,</span>
     <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;rgb_array&quot;</span><span class="p">,</span>
-    <span class="n">desc</span><span class="o">=</span><span class="n">generate_random_map</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">map_size</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">proba_frozen</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">seed</span><span class="p">),</span>
+    <span class="n">desc</span><span class="o">=</span><span class="n">generate_random_map</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">map_size</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">proba_frozen</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">seed</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -564,10 +565,10 @@ algorithm.</p>
 can have a look at the <a class="reference external" href="#References">References section</a> for some
 refreshers on the theory. Now, let’s create our Q-table initialized at
 zero with the states number as rows and the actions number as columns.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">action_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">state_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Action size: </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">action_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State size: </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">state_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">action_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">state_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Action size: </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">action_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State size: </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">state_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">Qlearning</span><span class="p">:</span>
@@ -623,34 +624,34 @@ zero with the states number as rows and the actions number as columns.</p>
 <h3>Running the environment<a class="headerlink" href="#running-the-environment" title="Permalink to this heading">#</a></h3>
 <p>Let’s instantiate the learner and the explorer.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">learner</span> <span class="o">=</span> <span class="n">Qlearning</span><span class="p">(</span>
-    <span class="n">learning_rate</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
-    <span class="n">gamma</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
-    <span class="n">state_size</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span>
-    <span class="n">action_size</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">action_size</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
+    <span class="n">state_size</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span>
+    <span class="n">action_size</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">action_size</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">explorer</span> <span class="o">=</span> <span class="n">EpsilonGreedy</span><span class="p">(</span>
-    <span class="n">epsilon</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p>This will be our main function to run our environment until the maximum
-number of episodes <code class="docutils literal notranslate"><span class="pre">p.total_episodes</span></code>. To account for stochasticity,
-we will also run our environment a few times.</p>
+number of episodes <code class="docutils literal notranslate"><span class="pre">params.total_episodes</span></code>. To account for
+stochasticity, we will also run our environment a few times.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_env</span><span class="p">():</span>
-    <span class="n">rewards</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">total_episodes</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">n_runs</span><span class="p">))</span>
-    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">total_episodes</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">n_runs</span><span class="p">))</span>
-    <span class="n">episodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">total_episodes</span><span class="p">)</span>
-    <span class="n">qtables</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">n_runs</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">action_size</span><span class="p">))</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="o">.</span><span class="n">total_episodes</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">n_runs</span><span class="p">))</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="o">.</span><span class="n">total_episodes</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">n_runs</span><span class="p">))</span>
+    <span class="n">episodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">total_episodes</span><span class="p">)</span>
+    <span class="n">qtables</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="o">.</span><span class="n">n_runs</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">action_size</span><span class="p">))</span>
     <span class="n">all_states</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">all_actions</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">n_runs</span><span class="p">):</span>  <span class="c1"># Run several times to account for stochasticity</span>
+    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">n_runs</span><span class="p">):</span>  <span class="c1"># Run several times to account for stochasticity</span>
         <span class="n">learner</span><span class="o">.</span><span class="n">reset_qtable</span><span class="p">()</span>  <span class="c1"># Reset the Q-table between runs</span>
 
         <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
-            <span class="n">episodes</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Run </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">n_runs</span><span class="si">}</span><span class="s2"> - Episodes&quot;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span>
+            <span class="n">episodes</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Run </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">n_runs</span><span class="si">}</span><span class="s2"> - Episodes&quot;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">):</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">seed</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Reset the environment</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">seed</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Reset the environment</span>
             <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">total_rewards</span> <span class="o">=</span> <span class="mi">0</span>
@@ -763,7 +764,7 @@ arrow will represent the best action to choose for each tile/state.</p>
         <span class="n">spine</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">0.7</span><span class="p">)</span>
         <span class="n">spine</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
     <span class="n">img_title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;frozenlake_q_values_</span><span class="si">{</span><span class="n">map_size</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">map_size</span><span class="si">}</span><span class="s2">.png&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">savefig_folder</span> <span class="o">/</span> <span class="n">img_title</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">savefig_folder</span> <span class="o">/</span> <span class="n">img_title</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -781,7 +782,7 @@ with the following function:</p>
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Actions&quot;</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="n">img_title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;frozenlake_states_actions_distrib_</span><span class="si">{</span><span class="n">map_size</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">map_size</span><span class="si">}</span><span class="s2">.png&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">savefig_folder</span> <span class="o">/</span> <span class="n">img_title</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">savefig_folder</span> <span class="o">/</span> <span class="n">img_title</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -796,31 +797,33 @@ with the following function:</p>
 <span class="k">for</span> <span class="n">map_size</span> <span class="ow">in</span> <span class="n">map_sizes</span><span class="p">:</span>
     <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
         <span class="s2">&quot;FrozenLake-v1&quot;</span><span class="p">,</span>
-        <span class="n">is_slippery</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">is_slippery</span><span class="p">,</span>
+        <span class="n">is_slippery</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">is_slippery</span><span class="p">,</span>
         <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;rgb_array&quot;</span><span class="p">,</span>
-        <span class="n">desc</span><span class="o">=</span><span class="n">generate_random_map</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">map_size</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">proba_frozen</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">seed</span><span class="p">),</span>
+        <span class="n">desc</span><span class="o">=</span><span class="n">generate_random_map</span><span class="p">(</span>
+            <span class="n">size</span><span class="o">=</span><span class="n">map_size</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">proba_frozen</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">seed</span>
+        <span class="p">),</span>
     <span class="p">)</span>
 
-    <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">action_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">state_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">action_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">state_size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
     <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">seed</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">seed</span>
     <span class="p">)</span>  <span class="c1"># Set the seed to get reproducible results when sampling the action space</span>
     <span class="n">learner</span> <span class="o">=</span> <span class="n">Qlearning</span><span class="p">(</span>
-        <span class="n">learning_rate</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
-        <span class="n">state_size</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span>
-        <span class="n">action_size</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">action_size</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
+        <span class="n">state_size</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span>
+        <span class="n">action_size</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">action_size</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">explorer</span> <span class="o">=</span> <span class="n">EpsilonGreedy</span><span class="p">(</span>
-        <span class="n">epsilon</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Map size: </span><span class="si">{</span><span class="n">map_size</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">map_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">rewards</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">episodes</span><span class="p">,</span> <span class="n">qtables</span><span class="p">,</span> <span class="n">all_states</span><span class="p">,</span> <span class="n">all_actions</span> <span class="o">=</span> <span class="n">run_env</span><span class="p">()</span>
 
     <span class="c1"># Save the results in dataframes</span>
-    <span class="n">res</span><span class="p">,</span> <span class="n">st</span> <span class="o">=</span> <span class="n">postprocess</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">map_size</span><span class="p">)</span>
+    <span class="n">res</span><span class="p">,</span> <span class="n">st</span> <span class="o">=</span> <span class="n">postprocess</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">map_size</span><span class="p">)</span>
     <span class="n">res_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">res_all</span><span class="p">,</span> <span class="n">res</span><span class="p">])</span>
     <span class="n">st_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">st_all</span><span class="p">,</span> <span class="n">st</span><span class="p">])</span>
     <span class="n">qtable</span> <span class="o">=</span> <span class="n">qtables</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Average the Q-table between runs</span>
@@ -872,7 +875,7 @@ decrease.</p>
         <span class="n">axi</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;map size&quot;</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="n">img_title</span> <span class="o">=</span> <span class="s2">&quot;frozenlake_steps_and_rewards.png&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">savefig_folder</span> <span class="o">/</span> <span class="n">img_title</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">savefig_folder</span> <span class="o">/</span> <span class="n">img_title</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 
