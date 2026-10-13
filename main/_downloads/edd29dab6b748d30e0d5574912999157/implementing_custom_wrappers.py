@@ -3,6 +3,7 @@ Implementing Custom Wrappers
 ============================
 
 In this tutorial we will describe how to implement your own custom wrappers.
+
 Wrappers are a great way to add functionality to your environments in a modular way.
 This will save you a lot of boilerplate code.
 
@@ -32,9 +33,9 @@ Before following this tutorial, make sure to check out the docs of the :mod:`gym
 # observation wrapper like this:
 
 import numpy as np
-from gym import ActionWrapper, ObservationWrapper, RewardWrapper, Wrapper
 
 import gymnasium as gym
+from gymnasium import ActionWrapper, ObservationWrapper, RewardWrapper, Wrapper
 from gymnasium.spaces import Box, Discrete
 
 
@@ -69,12 +70,12 @@ class DiscreteActions(ActionWrapper):
         return self.disc_to_cont[act]
 
 
-if __name__ == "__main__":
-    env = gym.make("LunarLanderContinuous-v2")
-    wrapped_env = DiscreteActions(
-        env, [np.array([1, 0]), np.array([-1, 0]), np.array([0, 1]), np.array([0, -1])]
-    )
-    print(wrapped_env.action_space)  # Discrete(4)
+env = gym.make("LunarLanderContinuous-v3")
+# print(env.action_space)  # Box(-1.0, 1.0, (2,), float32)
+wrapped_env = DiscreteActions(
+    env, [np.array([1, 0]), np.array([-1, 0]), np.array([0, 1]), np.array([0, -1])]
+)
+# print(wrapped_env.action_space)  # Discrete(4)
 
 
 # %%
@@ -82,7 +83,7 @@ if __name__ == "__main__":
 # ------------------------------------------------
 # Reward wrappers are used to transform the reward that is returned by an environment.
 # As for the previous wrappers, you need to specify that transformation by implementing the
-# :meth:`gymnasium.RewardWrapper.reward` method. Also, you might want to update the reward range of the wrapper.
+# :meth:`gymnasium.RewardWrapper.reward` method.
 #
 # Let us look at an example: Sometimes (especially when we do not have control over the reward
 # because it is intrinsic), we want to clip the reward to a range to gain some numerical stability.
@@ -96,7 +97,6 @@ class ClipReward(RewardWrapper):
         super().__init__(env)
         self.min_reward = min_reward
         self.max_reward = max_reward
-        self.reward_range = (min_reward, max_reward)
 
     def reward(self, r: SupportsFloat) -> SupportsFloat:
         return np.clip(r, self.min_reward, self.max_reward)
@@ -110,8 +110,9 @@ class ClipReward(RewardWrapper):
 # Such wrappers can be implemented by inheriting from :class:`gymnasium.Wrapper`.
 #
 # - You can set a new action or observation space by defining ``self.action_space`` or ``self.observation_space`` in ``__init__``, respectively
-# - You can set new metadata and reward range by defining ``self.metadata`` and ``self.reward_range`` in ``__init__``, respectively
+# - You can set new metadata by defining ``self.metadata`` in ``__init__``
 # - You can override :meth:`gymnasium.Wrapper.step`, :meth:`gymnasium.Wrapper.render`, :meth:`gymnasium.Wrapper.close` etc.
+#
 # If you do this, you can access the environment that was passed
 # to your wrapper (which *still* might be wrapped in some other wrapper) by accessing the attribute :attr:`env`.
 #
